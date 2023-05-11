@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Excursion;
+use App\Models\ExcursionTariff;
 use Illuminate\Http\Request;
 use App\Http\Resources\ExcursionResource;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +89,42 @@ class ExcursionController extends Controller
             ], 404);
         } else {
         return new ExcursionResource($excursions);
+        }
+    }
+    
+        /**
+     * Get Tours availability
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    /** @OA\Get(
+     *     path="/api/excursions/availability",
+     *     summary="Получение доступности и цен по всем экскурсиям. Параметр id соответствует tariffs->id в методе /api/excursions/{id}",
+     *     tags={"Excursions"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized user",
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Excursions Availability not found",
+     *     )
+     * )
+     * 
+     */
+    public function getExcursionsAvailability(Request $request) {
+        $excursionsAvailability = ExcursionTariff::all();
+        $updated_at = date("Y-m-d H:i:s", strtotime($excursionsAvailability[0]->updated_at));
+        $excursionsAvailability->makeHidden(['updated_at']);
+        if (!$excursionsAvailability) {
+            return response()->json(['success' => false, 'message' => 'Excursions availability does not exist'], 400);
+        } else {
+            return response()->json(['success' => true, 'updated_at' => $updated_at, 'availability' => $excursionsAvailability]);
         }
     }
     

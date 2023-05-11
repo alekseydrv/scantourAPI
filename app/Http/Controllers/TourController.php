@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tour;
+use App\Models\Accomodation;
 use Illuminate\Http\Request;
 use App\Http\Resources\TourResource;
 use App\Http\Resources\TourCollection;
@@ -94,6 +95,43 @@ class TourController extends Controller
         return new TourResource($tours);
         }
     }
+    
+    /**
+     * Get Tours availability
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    /** @OA\Get(
+     *     path="/api/tours/availability",
+     *     summary="Получение доступности и цен по всем турам. Параметр id соответствует accomodation->id в методе /api/tours/{id}",
+     *     tags={"Tours"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Unauthorized user",
+     *     ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Tours Availability not found",
+     *     )
+     * )
+     * 
+     */
+    public function getToursAvailability(Request $request) {
+        $toursAvailability = Accomodation::all();
+        $updated_at = date("Y-m-d H:i:s", strtotime($toursAvailability[0]->updated_at));
+        $toursAvailability->makeHidden(['updated_at']);
+        if (!$toursAvailability) {
+            return response()->json(['success' => false, 'message' => 'Tours availability does not exist'],400);
+        } else {
+            return ['success' => true, 'updated_at' => $updated_at, 'availability' => $toursAvailability];
+        }
+    }
+    
     
     public function create()
     {

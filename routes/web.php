@@ -27,3 +27,8 @@ use App\Http\Controllers\TourController;
  */
 Route::apiResource('/', TourController::class);
 
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});

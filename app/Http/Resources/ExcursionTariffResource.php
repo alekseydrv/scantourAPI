@@ -17,9 +17,11 @@ class ExcursionTariffResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'excursion_date_id' => $this->excursion_date_id,
+            //'excursion_date_id' => $this->excursion_date_id,
             'price' => $this->price,
+            'price_sale' => $this->price_sale,
             'availability' => $this->availability,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

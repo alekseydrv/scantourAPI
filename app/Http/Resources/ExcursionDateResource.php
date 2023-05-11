@@ -17,7 +17,7 @@ class ExcursionDateResource extends JsonResource
         return [
             'id' => $this->id,
             'date' => $this->excursion_date,
-            'excursion_id' => $this->excursion_id,
+            //'excursion_id' => $this->excursion_id,
             'tariffs' => ExcursionTariffResource::collection($this->excursiontariffs),
         ];
     }

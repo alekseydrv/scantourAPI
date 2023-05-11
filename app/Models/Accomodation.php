@@ -9,9 +9,9 @@ class Accomodation extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['id','name','tariff_id', 'price', 'availability'];
+    protected $fillable = ['id','name','tariff_id', 'price', 'availability', 'updated_at'];
     
-    protected $visible = ['id','name','tour_date_id', 'price', 'availability'];
+    protected $visible = ['id','name','tour_date_id', 'price', 'availability', 'updated_at'];
     
     public function tariffs()
     {
